@@ -18,6 +18,8 @@ uv add python-dotenv black isort (simply to format the code here and there)
 uv add langchain-ollama
 black .
 isort .
+uv add langchain-tavily
+uv add tavily-python
 
 irm https://ollama.com/install.ps1 | iex past this in window shell to install Ollama
 
