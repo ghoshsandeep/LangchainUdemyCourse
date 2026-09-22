@@ -17,19 +17,19 @@ load_dotenv()
 
 tavily = TavilyClient()
 
-# class Source(BaseModel):
-#     """Schema for a source used by the agent"""
+class Source(BaseModel):
+    """Schema for a source used by the agent"""
 
-#     url: str = Field(description="The URL of the source")
+    url: str = Field(description="The URL of the source")
 
 
-# class AgentResponse(BaseModel):
-#     """Schema for agent response with answer and sources"""
+class AgentResponse(BaseModel):
+    """Schema for agent response with answer and sources"""
 
-#     answer: str = Field(description="Thr agent's answer to the query")
-#     sources: List[Source] = Field(
-#         default_factory=list, description="List of sources used to generate the answer"
-#     )
+    answer: str = Field(description="Thr agent's answer to the query")
+    sources: List[Source] = Field(
+        default_factory=list, description="List of sources used to generate the answer"
+    )
 
 
 # ### First Test Agent call ### #
@@ -53,12 +53,15 @@ def search(query: str) -> str:
 ## During thrid test run, we are removing the customer search tool , we also do not need TavilyClient we can comment this.
 ## Now we will use the TavilySearch tool from langchain_tavily package which is already implemented and we can use it directly in the tools list.
 
+## During the fourth test run, we introduce pydantic models to define the schema for the agent's response. We create a Source model to represent individual sources and an AgentResponse model to encapsulate the answer and its associated sources. This allows for structured responses from the agent, making it easier to handle and interpret the results.
+
 
 llm_1 = ChatOpenAI()
 llm=ChatOpenAI(model_name="gpt-5.6-luna", reasoning_effort="none")
 # tools = [search] use this line for first and second test run, for third test run we will use the TavilySearch tool from langchain_tavily package.
 tools = [TavilySearch()]
-agent = create_agent(model=llm, tools=tools)
+#agent = create_agent(model=llm, tools=tools) user for first and second test run.
+agent=create_agent(model=llm, tools=tools, response_format=AgentResponse) # use this line for  fourth test run.
 
 
 # llm=ChatOpenAI(model_name="gpt-5.6-luna", temperature=0.2)
